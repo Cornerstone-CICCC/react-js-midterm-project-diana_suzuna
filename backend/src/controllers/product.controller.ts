@@ -29,8 +29,15 @@ const getProductById = async (req: Request<{ id: string }>, res: Response) => {
 };
 
 const addProduct = async (req: Request, res: Response) => {
-  const { item_name, stock_quantity, price, image, description, category } =
-    req.body;
+  const {
+    item_name,
+    stock_quantity,
+    price,
+    image,
+    description,
+    pet_type,
+    category,
+  } = req.body;
 
   try {
     const newProduct = await productService.add({
@@ -39,6 +46,7 @@ const addProduct = async (req: Request, res: Response) => {
       price,
       image,
       description,
+      pet_type,
       category,
     });
     if (!newProduct) {
@@ -57,8 +65,15 @@ const updateProductById = async (
   res: Response,
 ) => {
   const { id } = req.params;
-  const { item_name, stock_quantity, price, image, description, category } =
-    req.body;
+  const {
+    item_name,
+    stock_quantity,
+    price,
+    image,
+    description,
+    pet_type,
+    category,
+  } = req.body;
 
   try {
     const updatedProduct = await productService.update(id, {
@@ -67,6 +82,7 @@ const updateProductById = async (
       price,
       image,
       description,
+      pet_type,
       category,
     });
     if (!updatedProduct) {
