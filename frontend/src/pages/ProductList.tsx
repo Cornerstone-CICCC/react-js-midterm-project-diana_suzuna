@@ -59,7 +59,8 @@ const PrpductList = () => {
         </button>
       </section>
       {/* <!-- Product Grid --> */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-gutter">
+      <section className="pb-20 grid md:grid-cols-1 lg:grid-cols-4 gap-gutter">
+        {/* sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 */}
         {/* <!-- Product Card 1 --> */}
         <div className="bg-surface rounded-xl overflow-hidden card-shadow hover:scale-[1.02] transition-transform group">
           <div className="relative aspect-square overflow-hidden">

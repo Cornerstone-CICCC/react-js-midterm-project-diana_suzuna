@@ -1,6 +1,6 @@
 // import HeaderCounter from "./HeaderCounter";
 // import { useTheme } from "../contexts/theme/UseTheme";
-// import { Link } from "react-router";
+import { Link } from "react-router";
 
 // Reaact-icons
 import { MdOutlinePets } from "react-icons/md";
@@ -11,7 +11,7 @@ const Header = () => {
 
   return (
     <header className="flex justify-between items-center gap-2 p-2">
-      <div className="logo flex items-center gap-2">
+      <Link to={"/"} className="logo flex items-center gap-2">
         <span
           className="material-symbols-outlined text-primary dark:text-primary-fixed"
           data-icon="pets"
@@ -21,16 +21,19 @@ const Header = () => {
         <h1 className="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">
           PetParty
         </h1>
-      </div>
+      </Link>
       <div className="flex items-center gap-4">
-        <button className="hover:opacity-80 transition-opacity active:scale-95 transition-transform">
+        <Link
+          to={"cart"}
+          className="hover:opacity-80 transition-opacity active:scale-95 transition-transform"
+        >
           <span
             className="material-symbols-outlined text-on-surface-variant"
             data-icon="shopping_cart"
           >
             <MdOutlineShoppingCart />
           </span>
-        </button>
+        </Link>
       </div>
       {/* <nav>
         <ul className="flex gap-5 items-center">

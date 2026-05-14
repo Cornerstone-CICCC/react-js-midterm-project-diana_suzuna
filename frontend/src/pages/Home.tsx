@@ -2,6 +2,7 @@ import { GiCat } from "react-icons/gi";
 import { SiDatadog } from "react-icons/si";
 import { FaEarlybirds } from "react-icons/fa";
 import { GiTropicalFish } from "react-icons/gi";
+import { Link } from "react-router";
 
 const Home = () => {
   return (
@@ -25,9 +26,12 @@ const Home = () => {
               Quality care, premium food, and endless love delivered to your
               door.
             </p>
-            <button className="bg-secondary-container text-on-secondary-container px-lg py-sm rounded-full font-bold shadow-md hover:opacity-90 active:scale-95 transition-all">
+            <Link
+              to={"products"}
+              className="bg-secondary-container text-on-secondary-container px-lg py-sm rounded-full font-bold shadow-md hover:opacity-90 active:scale-95 transition-all"
+            >
               Shop Now
-            </button>
+            </Link>
           </div>
         </div>
       </section>
