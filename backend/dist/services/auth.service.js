@@ -8,13 +8,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerUser = void 0;
-const users_model_1 = require("../models/users.model");
-const registerUser = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    const existingUser = yield users_model_1.User.findOne({ email: userData.email });
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const user_service_1 = __importDefault(require("./user.service"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const signup = (userData) => __awaiter(void 0, void 0, void 0, function* () {
+    const existingUser = yield user_service_1.default.getByEmail(userData.email);
     if (existingUser)
-        throw new Error('The user already exists!');
+        throw new Error('Email already in use.');
+    userData.password = yield bcrypt_1.default.hash(userData.password, 10);
+    return yield user_service_1.default.add(userData);
 });
-exports.registerUser = registerUser;
-const ;
+const login = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_service_1.default.getByEmail(email);
+    if (!user)
+        return null;
+    const isMatch = yield bcrypt_1.default.compare(password, user.password);
+    if (!isMatch)
+        return null;
+    const payload = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+    };
+    const token = jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return token;
+});
+exports.default = {
+    signup,
+    login,
+};
