@@ -8,6 +8,7 @@ import userRouter from './routes/user.routes';
 import productRouter from './routes/product.routes';
 import orderRouter from './routes/order.routes';
 import cookieParser from 'cookie-parser';
+import categoryRouter from './routes/category.routes';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/products', productRouter);
 app.use('/orders', orderRouter);
+app.use('/categories', categoryRouter);
 
 //Fallback 404
 app.use((req: Request, res: Response) => {
