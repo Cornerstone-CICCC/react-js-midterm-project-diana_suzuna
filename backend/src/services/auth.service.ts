@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import userService from './user.service';
 import jwt from 'jsonwebtoken';
-import { sign } from 'node:crypto';
 
 const signup = async (userData: any) => {
   const existingUser = await userService.getByEmail(userData.email);
