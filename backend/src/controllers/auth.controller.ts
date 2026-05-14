@@ -16,11 +16,12 @@ const signup = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const token = await authService.login(email, password);
-  if (!token) {
+  const result = await authService.login(email, password);
+  if (!result) {
     res.status(401).json({ message: 'Invalid email or password.' });
     return;
   }
+  const { token, role } = result;
 
   res.cookie('accesToken', token, {
     httpOnly: true,
@@ -29,6 +30,7 @@ const login = async (req: Request, res: Response) => {
 
   res.status(200).json({
     message: 'Login successfull!',
+    role,
   });
 };
 

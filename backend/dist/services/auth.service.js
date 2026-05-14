@@ -34,8 +34,10 @@ const login = (email, password) => __awaiter(void 0, void 0, void 0, function* (
         email: user.email,
         role: user.role,
     };
-    const token = jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-    return token;
+    const token = jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: '1h',
+    });
+    return { token, role: user.role };
 });
 exports.default = {
     signup,
