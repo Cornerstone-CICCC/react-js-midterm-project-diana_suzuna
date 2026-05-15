@@ -9,28 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const users_model_1 = require("../models/users.model");
+const orders_model_1 = require("../models/orders.model");
+const products_model_1 = require("../models/products.model");
 const getAll = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.find();
+    return yield orders_model_1.Order.find().populate('user').populate('products.product');
 });
 const getById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findById(id);
+    return yield orders_model_1.Order.findById(id).populate('user').populate('products.product');
 });
-const getByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findOne({ email });
-});
-const add = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.create(userData);
+const add = (orderData) => __awaiter(void 0, void 0, void 0, function* () {
+    let calculatedTotal = 0;
+    if (!orderData.products || orderData.products.length === 0) {
+        throw new Error('There are no products in the order.');
+    }
+    for (const item of orderData.products) {
+        const product = yield products_model_1.Product.findById(item.product);
+        if (!product)
+            throw new Error(`Product ${item.product} not found.`);
+        calculatedTotal += product.price * item.quantity;
+    }
+    const finalOrderData = Object.assign(Object.assign({}, orderData), { total_price: calculatedTotal });
+    return yield orders_model_1.Order.create(finalOrderData);
 });
 const update = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findByIdAndUpdate(id, data, { new: true });
+    return yield orders_model_1.Order.findByIdAndUpdate(id, data, { new: true });
 });
 const remove = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findByIdAndDelete(id);
+    return yield orders_model_1.Order.findByIdAndDelete(id);
 });
 exports.default = {
     getAll,
-    getByEmail,
     getById,
     add,
     update,

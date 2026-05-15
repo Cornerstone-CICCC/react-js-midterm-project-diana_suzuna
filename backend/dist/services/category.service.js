@@ -9,28 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const users_model_1 = require("../models/users.model");
+const categories_model_1 = require("../models/categories.model");
 const getAll = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.find();
+    return yield categories_model_1.Category.find();
 });
 const getById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findById(id);
+    return yield categories_model_1.Category.findById(id);
 });
-const getByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findOne({ email });
-});
-const add = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.create(userData);
+const add = (categoryData) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield categories_model_1.Category.create(categoryData);
 });
 const update = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findByIdAndUpdate(id, data, { new: true });
+    return yield categories_model_1.Category.findByIdAndUpdate(id, data, { new: true });
 });
 const remove = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findByIdAndDelete(id);
+    return yield categories_model_1.Category.findByIdAndDelete(id);
 });
 exports.default = {
     getAll,
-    getByEmail,
     getById,
     add,
     update,

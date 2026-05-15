@@ -9,28 +9,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const users_model_1 = require("../models/users.model");
+const products_model_1 = require("../models/products.model");
 const getAll = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.find();
+    return yield products_model_1.Product.find().populate('category');
 });
 const getById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findById(id);
+    return yield products_model_1.Product.findById(id);
 });
-const getByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findOne({ email });
-});
-const add = (userData) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.create(userData);
+const add = (productData) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield products_model_1.Product.create(productData);
 });
 const update = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findByIdAndUpdate(id, data, { new: true });
+    return yield products_model_1.Product.findByIdAndUpdate(id, data, { new: true });
 });
 const remove = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield users_model_1.User.findByIdAndDelete(id);
+    return yield products_model_1.Product.findByIdAndDelete(id);
 });
 exports.default = {
     getAll,
-    getByEmail,
     getById,
     add,
     update,

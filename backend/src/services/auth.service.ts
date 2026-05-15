@@ -24,9 +24,17 @@ const login = async (email: string, password: string) => {
     role: user.role,
   };
 
+<<<<<<< HEAD
   const token = jwt.sign(payload, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
   return token;
+=======
+  const token = jwt.sign(payload, process.env.JWT_SECRET!, {
+    expiresIn: '1h',
+  });
+
+  return { token, role: user.role };
+>>>>>>> backend
 };
 
 export default {

@@ -12,76 +12,76 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_service_1 = __importDefault(require("../services/user.service"));
-const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const category_service_1 = __importDefault(require("../services/category.service"));
+const getAllCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield user_service_1.default.getAll();
-        res.status(200).json(users);
+        const category = yield category_service_1.default.getAll();
+        res.status(200).json(category);
     }
     catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });
     }
 });
-const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getCategoryById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const user = yield user_service_1.default.getById(id);
-        if (!user) {
-            res.status(404).json({ message: 'User not found.' });
+        const category = yield category_service_1.default.getById(id);
+        if (!category) {
+            res.status(404).json({ message: 'Category not found.' });
             return;
         }
-        res.status(200).json(user);
+        res.status(200).json(category);
     }
     catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });
     }
 });
-const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { fullname, email, role } = req.body;
+const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { category_name } = req.body;
     try {
-        const newUser = yield user_service_1.default.add({ fullname, email, role });
-        if (!newUser) {
-            res.status(500).json({ message: 'Unable to add user' });
-            return;
-        }
-        res.status(201).json(newUser);
-    }
-    catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const { fullname, email, role } = req.body;
-    try {
-        const updatedUser = yield user_service_1.default.update(id, {
-            fullname,
-            email,
-            role,
+        const newCategory = yield category_service_1.default.add({
+            category_name,
         });
-        if (!updatedUser) {
-            res.status(404).json({ message: 'User not found' });
+        if (!newCategory) {
+            res.status(500).json({ message: 'Unable to add category.' });
             return;
         }
-        res.status(200).json(updatedUser);
+        res.status(201).json(newCategory);
     }
     catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });
     }
 });
-const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateCategoryById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    const { category_name } = req.body;
     try {
-        const deletedUser = yield user_service_1.default.remove(id);
-        if (!deletedUser) {
-            res.status(404).json({ message: 'User not found' });
+        const updatedCategory = yield category_service_1.default.update(id, {
+            category_name,
+        });
+        if (!updatedCategory) {
+            res.status(404).json({ message: 'Product not found.' });
             return;
         }
-        res.status(200).json(deletedUser);
+        res.status(200).json(updatedCategory);
+    }
+    catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+const deleteCategoryById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const deletedCategory = yield category_service_1.default.remove(id);
+        if (!deletedCategory) {
+            res.status(404).json({ message: 'Product not found.' });
+            return;
+        }
+        res.status(200).json(deletedCategory);
     }
     catch (err) {
         console.error(err);
@@ -89,9 +89,9 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.default = {
-    getAllUsers,
-    getUserById,
-    addUser,
-    updateUserById,
-    deleteUserById,
+    getAllCategories,
+    getCategoryById,
+    addCategory,
+    updateCategoryById,
+    deleteCategoryById,
 };

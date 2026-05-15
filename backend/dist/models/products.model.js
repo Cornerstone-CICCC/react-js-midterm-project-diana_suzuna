@@ -40,6 +40,7 @@ const ProductSchema = new mongoose_1.Schema({
     stock_quantity: { type: Number, required: true },
     price: { type: Number, required: true },
     image: { type: String, required: true },
+    description: { type: String, required: true },
     category: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,
