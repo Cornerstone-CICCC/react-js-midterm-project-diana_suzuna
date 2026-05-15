@@ -41,6 +41,11 @@ const ProductSchema = new mongoose_1.Schema({
     price: { type: Number, required: true },
     image: { type: String, required: true },
     description: { type: String, required: true },
+    pet_type: {
+        type: String,
+        enum: ['dog', 'cat', 'bird', 'fish', 'hamster'],
+        required: true,
+    },
     category: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         required: true,

@@ -39,7 +39,7 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { item_name, stock_quantity, price, image, description, category } = req.body;
+    const { item_name, stock_quantity, price, image, description, pet_type, category, } = req.body;
     try {
         const newProduct = yield product_service_1.default.add({
             item_name,
@@ -47,6 +47,7 @@ const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             price,
             image,
             description,
+            pet_type,
             category,
         });
         if (!newProduct) {
@@ -62,7 +63,7 @@ const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 const updateProductById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { item_name, stock_quantity, price, image, description, category } = req.body;
+    const { item_name, stock_quantity, price, image, description, pet_type, category, } = req.body;
     try {
         const updatedProduct = yield product_service_1.default.update(id, {
             item_name,
@@ -70,6 +71,7 @@ const updateProductById = (req, res) => __awaiter(void 0, void 0, void 0, functi
             price,
             image,
             description,
+            pet_type,
             category,
         });
         if (!updatedProduct) {
