@@ -14,23 +14,23 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PageLayout />}>
-          {/* admin dashboard */}
-          <Route path="admin_dashboard" element={<Outlet />}>
-            <Route index element={<AdminDashboard />} />
-          </Route>
+        {/* login/signup */}
+        <Route path="auth" element={<Outlet />}>
+          <Route index element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
+        </Route>
 
-          {/* login/signup */}
-          <Route path="auth" element={<Outlet />}>
-            <Route index element={<LoginPage />} />
-            <Route path="signup" element={<SignupPage />} />
-          </Route>
+        <Route path="/" element={<PageLayout />}>
+          <Route path="admin_dashboard" element={<AdminDashboard />} />
+          {/* <Route index element={<AdminDashboard />} /> */}
 
           <Route index element={<Home />} />
+
           <Route path="products" element={<Outlet />}>
             <Route index element={<ProductList />} />
             <Route path=":id" element={<ProductDetail />} />
           </Route>
+
           <Route path="cart" element={<Cart />} />
           <Route path="customer_dashboard" element={<CustomerDashboard />} />
           <Route path="*" element={<NotFound />} />

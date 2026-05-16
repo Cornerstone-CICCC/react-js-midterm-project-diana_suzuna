@@ -112,7 +112,7 @@ const SignupPage = () => {
             <p className="font-body-md text-body-md text-on-surface-variant">
               Already have an account?
               <Link
-                to={"/login"}
+                to={"/auth"}
                 className="text-primary font-bold hover:underline"
               >
                 Login
