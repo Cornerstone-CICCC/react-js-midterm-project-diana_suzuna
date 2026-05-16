@@ -29,10 +29,6 @@ const getProductById = async (req: Request<{ id: string }>, res: Response) => {
 };
 
 const addProduct = async (req: Request, res: Response) => {
-<<<<<<< HEAD
-  const { item_name, stock_quantity, price, image, description, category } =
-    req.body;
-=======
   const {
     item_name,
     stock_quantity,
@@ -42,7 +38,6 @@ const addProduct = async (req: Request, res: Response) => {
     pet_type,
     category,
   } = req.body;
->>>>>>> backend
 
   try {
     const newProduct = await productService.add({
@@ -51,10 +46,7 @@ const addProduct = async (req: Request, res: Response) => {
       price,
       image,
       description,
-<<<<<<< HEAD
-=======
       pet_type,
->>>>>>> backend
       category,
     });
     if (!newProduct) {
@@ -73,10 +65,6 @@ const updateProductById = async (
   res: Response,
 ) => {
   const { id } = req.params;
-<<<<<<< HEAD
-  const { item_name, stock_quantity, price, image, description, category } =
-    req.body;
-=======
   const {
     item_name,
     stock_quantity,
@@ -86,7 +74,6 @@ const updateProductById = async (
     pet_type,
     category,
   } = req.body;
->>>>>>> backend
 
   try {
     const updatedProduct = await productService.update(id, {
@@ -95,10 +82,7 @@ const updateProductById = async (
       price,
       image,
       description,
-<<<<<<< HEAD
-=======
       pet_type,
->>>>>>> backend
       category,
     });
     if (!updatedProduct) {

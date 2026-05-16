@@ -28,8 +28,6 @@ export const checkAuth = (
     res.status(401).json({ message: 'Missing access token!' });
   }
 };
-<<<<<<< HEAD
-=======
 
 export const checkAdmin = (
   req: AuthRequest,
@@ -50,4 +48,3 @@ export const checkAdmin = (
     res.status(500).json({ message: 'Server error!' });
   }
 };
->>>>>>> backend

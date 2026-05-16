@@ -27,17 +27,19 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const token = yield auth_service_1.default.login(email, password);
-    if (!token) {
+    const result = yield auth_service_1.default.login(email, password);
+    if (!result) {
         res.status(401).json({ message: 'Invalid email or password.' });
         return;
     }
+    const { token, role } = result;
     res.cookie('accesToken', token, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000,
     });
     res.status(200).json({
         message: 'Login successfull!',
+        role,
     });
 });
 exports.default = {

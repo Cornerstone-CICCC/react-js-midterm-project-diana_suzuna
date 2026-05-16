@@ -6,10 +6,7 @@ export interface IProduct extends Document {
   price: number;
   image: string;
   description: string;
-<<<<<<< HEAD
-=======
   pet_type: 'dog' | 'cat' | 'bird' | 'fish' | 'hamster';
->>>>>>> backend
   category: mongoose.Types.ObjectId | any;
 }
 
@@ -20,14 +17,11 @@ const ProductSchema: Schema = new Schema(
     price: { type: Number, required: true },
     image: { type: String, required: true },
     description: { type: String, required: true },
-<<<<<<< HEAD
-=======
     pet_type: {
       type: String,
       enum: ['dog', 'cat', 'bird', 'fish', 'hamster'],
       required: true,
     },
->>>>>>> backend
     category: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

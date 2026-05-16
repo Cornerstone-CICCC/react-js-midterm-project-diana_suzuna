@@ -5,10 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const product_controller_1 = __importDefault(require("../controllers/product.controller"));
+const auth_middleware_1 = require("../middleware/auth.middleware");
 const productRouter = (0, express_1.Router)();
 productRouter.get('/', product_controller_1.default.getAllProducts);
 productRouter.get('/:id', product_controller_1.default.getProductById);
-productRouter.post('/', product_controller_1.default.addProduct);
-productRouter.put('/:id', product_controller_1.default.updateProductById);
-productRouter.delete('/:id', product_controller_1.default.deleteProductById);
+productRouter.post('/', auth_middleware_1.checkAuth, auth_middleware_1.checkAdmin, product_controller_1.default.addProduct);
+productRouter.put('/:id', auth_middleware_1.checkAuth, auth_middleware_1.checkAdmin, product_controller_1.default.updateProductById);
+productRouter.delete('/:id', auth_middleware_1.checkAuth, auth_middleware_1.checkAdmin, product_controller_1.default.deleteProductById);
 exports.default = productRouter;

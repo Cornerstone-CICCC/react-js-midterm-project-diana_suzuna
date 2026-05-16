@@ -1,8 +1,10 @@
 import { Link } from "react-router";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useUser } from "../../contexts/user/UseUser";
 
 const LoginPage = () => {
+  const { setUser } = useUser();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
@@ -12,30 +14,49 @@ const LoginPage = () => {
 
     // const res = await loginUser({ email, password });
 
-    const mockUser = {
-      fullname: "John Doe",
-      email: "test@test.com",
-      password: "Password123!",
-      role: "customer",
-    };
+    // const mockUser = {
+    //   fullname: "John Doe",
+    //   email: "test@test.com",
+    //   password: "Password123!",
+    //   role: "customer",
+    // };
 
-    if (mockUser.role === "admin") {
-      navigate("/admin_dashboard");
-    } else {
-      navigate("/customer_dashboard");
-    }
-
-    // const res = await fetch("http://localhost:4000/auth/login");
-    // if (!res.ok) {
-    //   throw new Error("Network response was not ok");
-    // }
-    // const data = await res.json();
-
-    // if (data.role === "admin") {
+    // if (mockUser.role === "admin") {
     //   navigate("/admin_dashboard");
     // } else {
     //   navigate("/customer_dashboard");
     // }
+
+    try {
+      const res = await fetch("http://localhost:4001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.message || "Login failed");
+        return;
+      }
+
+      const data = await res.json();
+      setUser(data);
+
+      if (data.role === "admin") {
+        navigate("/admin_dashboard");
+      } else {
+        navigate("/customer_dashboard");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      alert("Something went wrong with the network.");
+    }
   };
 
   return (

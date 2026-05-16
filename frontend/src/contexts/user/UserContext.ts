@@ -3,15 +3,17 @@ import { createContext } from "react";
 export interface User {
   fullname: string;
   email: string;
-  password: string;
+  role: string;
 }
 
 type UserContextType = {
-  users: User[];
-  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  logout: () => void;
 };
 
 export const UserContext = createContext<UserContextType>({
-  users: [],
-  setUsers: () => {},
+  user: null,
+  setUser: () => {},
+  logout: () => {},
 });

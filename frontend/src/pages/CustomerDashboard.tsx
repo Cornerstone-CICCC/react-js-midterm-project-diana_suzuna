@@ -1,10 +1,24 @@
+import { useUser } from "../contexts/user/UseUser";
+import { useNavigate } from "react-router";
+
 const CustomerDashboard = () => {
+  const { user, logout } = useUser();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const isConfirmed = window.confirm("Are you sure you want to logout?");
+    if (isConfirmed) {
+      logout();
+      navigate("/auth");
+    }
+  };
+
   return (
     <main className="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto min-h-screen">
       {/* <!-- Welcome Section --> */}
       <section className="mb-lg">
         <h1 className="font-display-lg text-display-lg text-primary mb-2">
-          Hello, Suzuna!
+          Hello {user ? user.fullname : "there"}!
         </h1>
         <p className="text-on-surface-variant font-body-lg">
           It's a great day to pamper your furry friends.
@@ -149,12 +163,19 @@ const CustomerDashboard = () => {
         </div>
       </section>
       {/* <!-- Logout Action --> */}
-      <section className="flex justify-center mt-xl">
-        <button className="flex items-center gap-2 bg-on-surface-variant/5 text-error px-xl py-md rounded-full font-bold hover:bg-error-container/20 active:scale-95 transition-all">
-          <span className="material-symbols-outlined">logout</span>
-          Logout from Account
-        </button>
-      </section>
+      {!user ? (
+        ""
+      ) : (
+        <section className="flex justify-center mt-xl">
+          <button
+            className="flex items-center gap-2 bg-on-surface-variant/5 text-error px-xl py-md rounded-full font-bold hover:bg-error-container/20 active:scale-95 transition-all"
+            onClick={handleLogout}
+          >
+            <span className="material-symbols-outlined">logout</span>
+            Logout from Account
+          </button>
+        </section>
+      )}
     </main>
   );
 };
