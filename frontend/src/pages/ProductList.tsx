@@ -2,27 +2,38 @@ import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useCart } from "../contexts/cart/UseCart";
 import type { Product } from "../contexts/cart/CartContext";
+import { Link, useLocation } from "react-router";
 
 const PrpductList = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const { setCart } = useCart();
+  const location = useLocation();
+  const initialPetType = location.state?.selectedPetType || "all";
+  const [activePetType, setActivePetType] = useState<string>(initialPetType);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    try {
-      const fetchProducts = async () => {
+    const fetchProducts = async () => {
+      try {
         const res = await fetch("http://localhost:4001/products");
         if (!res.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await res.json();
 
-        setProducts(data.products);
-      };
+        if (data && data.products) {
+          setProducts(data.products);
+        } else if (Array.isArray(data)) {
+          setProducts(data);
+        } else {
+          console.error("Unexpected data structure:", data);
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    };
 
-      fetchProducts();
-    } catch (err) {
-      console.error(err);
-    }
+    fetchProducts();
   }, []);
 
   const handleAddToCart = (product: Product) => {
@@ -47,7 +58,20 @@ const PrpductList = () => {
         ];
       }
     });
+    alert(`${product.item_name} has been added to your cart!`);
   };
+
+  const filteredProducts = products.filter((product) => {
+    const matchesPetType =
+      activePetType === "all" || product.pet_type === activePetType;
+
+    const matchesSearch = product.item_name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    return matchesPetType && matchesSearch;
+  });
+
   return (
     <main className="pt-20 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto">
       {/* <!-- Search and Hero Section --> */}
@@ -76,13 +100,22 @@ const PrpductList = () => {
               className="w-full bg-[#EFEBE9] border-none rounded-xl py-4 pl-12 pr-4 text-on-surface focus:ring-2 focus:ring-primary transition-all placeholder:text-outline"
               placeholder="Search for treats, toys, or food..."
               type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>
       </section>
       {/* <!-- Filters Section --> */}
       <section className="mb-gutter flex overflow-x-auto pb-4 gap-3 no-scrollbar">
-        <button className="flex items-center gap-2 px-6 py-2 bg-secondary-container text-on-secondary-container rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-transform">
+        <button
+          onClick={() => setActivePetType("all")}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            activePetType === "all"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
           <span
             className="material-symbols-outlined text-sm"
             data-icon="filter_list"
@@ -91,109 +124,152 @@ const PrpductList = () => {
           </span>
           All Products
         </button>
-        <button className="px-6 py-2 bg-surface-container-highest text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high active:scale-95 transition-all">
-          Natural
+        <button
+          onClick={() => {
+            if (activePetType === "dog") {
+              setActivePetType("all");
+            } else {
+              setActivePetType("dog");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            activePetType === "dog"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Dogs
         </button>
-        <button className="px-6 py-2 bg-surface-container-highest text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high active:scale-95 transition-all">
-          Grain-Free
+        <button
+          onClick={() => {
+            if (activePetType === "cat") {
+              setActivePetType("all");
+            } else {
+              setActivePetType("cat");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            activePetType === "cat"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Cats
         </button>
-        <button className="px-6 py-2 bg-surface-container-highest text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high active:scale-95 transition-all">
-          Puppy
+        <button
+          onClick={() => {
+            if (activePetType === "bird") {
+              setActivePetType("all");
+            } else {
+              setActivePetType("bird");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            activePetType === "bird"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Birds
         </button>
-        <button className="px-6 py-2 bg-surface-container-highest text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high active:scale-95 transition-all">
-          Eco-Friendly
+        <button
+          onClick={() => {
+            if (activePetType === "fish") {
+              setActivePetType("all");
+            } else {
+              setActivePetType("fish");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            activePetType === "fish"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Fish
         </button>
-        <button className="px-6 py-2 bg-surface-container-highest text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high active:scale-95 transition-all">
+        <button
+          onClick={() => {
+            if (search === "food") {
+              setSearch("");
+            } else {
+              setSearch("food");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            search === "food"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Foods
+        </button>
+        <button
+          onClick={() => {
+            if (search === "toy") {
+              setSearch("");
+            } else {
+              setSearch("toy");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            search === "toy"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
           Toys
         </button>
       </section>
       {/* <!-- Product Grid --> */}
       <section className="pb-20 grid md:grid-cols-1 lg:grid-cols-4 gap-gutter">
-        {/* sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 */}
         {/* <!-- Product Card 1 --> */}
-        <ul className="bg-surface rounded-xl overflow-hidden card-shadow hover:scale-[1.02] transition-transform group">
-          {products.map((product) => (
-            <>
-              <li
-                key={product._id}
-                className="relative aspect-square overflow-hidden"
-              >
-                <img alt={product.description} src={product.image} />
-              </li>
-              <div className="p-md flex flex-col gap-2">
-                <div className="flex justify-between items-start">
-                  <h3 className="font-headline-md text-headline-md text-on-surface">
-                    {product.item_name}
-                  </h3>
-                </div>
-                <p className="text-on-surface-variant text-body-md line-clamp-2">
-                  {product.description}
-                </p>
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-headline-md font-bold text-primary">
-                    ${product.price}
-                  </span>
-                  <button
-                    className="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 squishy-button active:scale-95 transition-transform"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    <span className="material-symbols-outlined" data-icon="add">
-                      add
-                    </span>
-                    Add
-                  </button>
-                </div>
+        {filteredProducts?.map((product) => (
+          <Link
+            to={`/products/${product._id}`}
+            key={product._id}
+            className="bg-surface rounded-xl overflow-hidden card-shadow hover:scale-[1.02] transition-transform group"
+          >
+            <div className="relative aspect-square overflow-hidden">
+              <img alt={product.description} src={product.image} />
+            </div>
+            <div className="p-md flex flex-col gap-2">
+              <div className="flex justify-between items-start">
+                <h3 className="font-headline-md text-headline-md text-on-surface">
+                  {product.item_name}
+                </h3>
               </div>
-            </>
-          ))}
-        </ul>
-        {/* <!-- Product Card 2 --> */}
-        {/* <div className="bg-surface rounded-xl overflow-hidden card-shadow hover:scale-[1.02] transition-transform group">
-          <div className="relative aspect-square overflow-hidden">
-            <img
-              alt="Eco Rope Toy"
-              className="w-full h-full object-cover rounded-lg m-2 w-[calc(100%-16px)] h-[calc(100%-16px)]"
-              data-alt="A durable, multi-colored cotton rope toy for dogs, coiled neatly on a light wood floor. The scene is bright and airy with high-key lighting, emphasizing the tactile texture of the natural fibers. The surrounding environment is a modern, minimalist home with soft shadows. The visual style is energetic yet clean, utilizing a palette of orange accents and warm earth tones."
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwj4kyJoCReRJQRelBgNfiUIWmDK8NQi0p0VQbaPzLrE1v86-sQO8fFqtUCdFtOZrVzIjFi7oiQl2Tko4saaAGp0g4Ucv6u2Ta-uXkLt5CBh1-jZOFtVpUHcaitNU84KRu-wBJbdTLyouQ2CBwLXXXU7j4KlNbwGvTL0GMzLx84pDTGeTju__kUdnVn47J9XInnYeHzDc1KbE5oz2Frsa5WE2CBMn-kZwkwpspR7ELtcXzVL9xp3YwszBD_tPZnYuMZqsOmYxv8_qs"
-            />
-            <span className="absolute top-4 left-4 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-label-sm">
-              Bestseller
-            </span>
-          </div>
-          <div className="p-md flex flex-col gap-2">
-            <div className="flex justify-between items-start">
-              <h3 className="font-headline-md text-headline-md text-on-surface">
-                Tough Rope Toy
-              </h3>
-              <div className="flex items-center gap-1 text-secondary">
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  data-icon="star"
-                  data-weight="fill"
-                  // style="font-variation-settings: 'FILL' 1;"
+              {/* <p className="text-on-surface-variant text-body-md line-clamp-2">
+                {product.description}
+              </p> */}
+              <div className="flex justify-between items-center mt-2">
+                <span className="text-headline-md font-bold text-primary">
+                  ${product.price}
+                </span>
+                <button
+                  className="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 squishy-button active:scale-95 transition-transform"
+                  onClick={(e) => {
+                    // IMPORTANT!!!
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAddToCart(product);
+                  }}
                 >
-                  star
-                </span>
-                <span className="text-label-md font-label-md">4.7</span>
+                  <span className="material-symbols-outlined" data-icon="add">
+                    add
+                  </span>
+                  Add
+                </button>
               </div>
             </div>
-            <p className="text-on-surface-variant text-body-md line-clamp-2">
-              Eco-friendly 100% natural cotton rope, perfect for aggressive
-              chewers.
-            </p>
-            <div className="flex justify-between items-center mt-2">
-              <span className="text-headline-md font-bold text-primary">
-                $18.50
-              </span>
-              <button className="bg-secondary text-on-secondary px-4 py-2 rounded-lg font-label-md text-label-md flex items-center gap-2 squishy-button active:scale-95 transition-transform">
-                <span className="material-symbols-outlined" data-icon="add">
-                  add
-                </span>
-                Add
-              </button>
-            </div>
-          </div>
-        </div> */}
+          </Link>
+        ))}
+
+        {filteredProducts?.length === 0 && (
+          <p className="text-center col-span-full text-on-surface-variant py-10">
+            No products found for this pet type.
+          </p>
+        )}
       </section>
     </main>
   );

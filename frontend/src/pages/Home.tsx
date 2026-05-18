@@ -2,9 +2,70 @@ import { GiCat } from "react-icons/gi";
 import { SiDatadog } from "react-icons/si";
 import { FaEarlybirds } from "react-icons/fa";
 import { GiTropicalFish } from "react-icons/gi";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useCart } from "../contexts/cart/UseCart";
+import type { Product } from "../contexts/cart/CartContext";
 
 const Home = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const { setCart } = useCart();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:4001/products");
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await res.json();
+
+        if (data && data.products) {
+          setProducts(data.products);
+        } else if (Array.isArray(data)) {
+          setProducts(data);
+        } else {
+          console.error("Unexpected data structure:", data);
+        }
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleAddToCart = (product: Product) => {
+    setCart((curr) => {
+      const existingItem = curr.find((p) => p.productId === product._id);
+
+      if (existingItem) {
+        return curr.map((p) =>
+          p.productId === product._id
+            ? { ...p, quantity: (p.quantity ?? 0) + 1 }
+            : p,
+        );
+      } else {
+        return [
+          ...curr,
+          {
+            ...product,
+            productId: Number(product._id),
+            quantity: 1,
+            id: uuidv4(),
+          },
+        ];
+      }
+    });
+    alert(`${product.item_name} has been added to your cart!`);
+  };
+
+  const handlePetTypeClick = (petType: string) => {
+    navigate("/products", { state: { selectedPetType: petType } });
+  };
+
   return (
     <main className="pt-16 max-w-max-width mx-auto">
       {/* <!-- Hero Banner --> */}
@@ -43,7 +104,12 @@ const Home = () => {
           </h3>
         </div>
         <div className="grid grid-cols-4 gap-gutter">
-          <div className="flex flex-col items-center gap-sm group cursor-pointer">
+          <div
+            className="flex flex-col items-center gap-sm group cursor-pointer"
+            onClick={() => {
+              handlePetTypeClick("dog");
+            }}
+          >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
               <span
                 className="material-symbols-outlined text-primary group-hover:text-on-secondary-container transition-colors scale-125"
@@ -56,7 +122,12 @@ const Home = () => {
               Dogs
             </span>
           </div>
-          <div className="flex flex-col items-center gap-sm group cursor-pointer">
+          <div
+            className="flex flex-col items-center gap-sm group cursor-pointer"
+            onClick={() => {
+              handlePetTypeClick("cat");
+            }}
+          >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
               <span
                 className="material-symbols-outlined text-primary group-hover:text-on-secondary-container transition-colors scale-125"
@@ -69,7 +140,12 @@ const Home = () => {
               Cats
             </span>
           </div>
-          <div className="flex flex-col items-center gap-sm group cursor-pointer">
+          <div
+            className="flex flex-col items-center gap-sm group cursor-pointer"
+            onClick={() => {
+              handlePetTypeClick("bird");
+            }}
+          >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
               <span
                 className="material-symbols-outlined text-primary group-hover:text-on-secondary-container transition-colors scale-125"
@@ -82,7 +158,12 @@ const Home = () => {
               Birds
             </span>
           </div>
-          <div className="flex flex-col items-center gap-sm group cursor-pointer">
+          <div
+            className="flex flex-col items-center gap-sm group cursor-pointer"
+            onClick={() => {
+              handlePetTypeClick("fish");
+            }}
+          >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
               <span
                 className="material-symbols-outlined text-primary group-hover:text-on-secondary-container transition-colors scale-125"
@@ -108,107 +189,53 @@ const Home = () => {
               Top picks from the community
             </p>
           </div>
-          <a
+          <Link
+            to={"/products"}
             className="text-primary font-label-md text-label-md hover:underline"
-            href="#"
           >
             View All
-          </a>
+          </Link>
         </div>
         <div className="flex gap-gutter overflow-x-auto hide-scrollbar px-margin-mobile md:px-margin-desktop">
           {/* <!-- Product Card 1 --> */}
-          <div className="min-w-[240px] md:min-w-[300px] bg-surface-container-lowest rounded-xl p-sm shadow-sm hover:shadow-lg transition-all active:scale-95 group">
-            <div className="relative rounded-lg overflow-hidden h-48 mb-sm bg-surface-variant">
-              <img
-                alt="Product"
-                className="w-full h-full object-cover"
-                data-alt="Premium organic dog food packaging displayed on a clean wooden surface with soft shadows. The lighting is bright and airy, reflecting a high-end boutique feel. The scene incorporates a minimalist background with a slight warm tan tint, emphasizing the healthy and natural quality of the product."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn6TZu-GLK9tS6N9uzJ9nwIJF6zyJkBvFItuQZYm1EwnTp3LQ5QUXgqeXBBjKO-mywos6rGYK8k5WGQjNstUmhLN0bsp5gkfBUTPKfNi0G6b9M-Hq0hD5ckLA0CoJQHRlHDqL2mlRrjOkry9Qxhs7T9tA_rKV8V6m_H3pxpVPkn2bwpUi5-Xq9wok-QILbkN-1fWUvSJejkysTSxHG5RGljA0aYRhlRcjVip0OF2Q_ojLqB-vM-IHO9008WdQK2UkoRoAmpOiyuiE0"
-              />
-              <div className="absolute top-2 right-2 bg-secondary-container text-on-secondary-container px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                Top Rated
+          {products?.map((product) => (
+            <Link
+              to={`/products/${product._id}`}
+              key={product._id}
+              className="min-w-[240px] md:min-w-[300px] bg-surface-container-lowest rounded-xl p-sm shadow-sm hover:shadow-lg transition-all active:scale-95 group"
+            >
+              <div className="relative rounded-lg overflow-hidden h-48 mb-sm bg-surface-variant">
+                <img alt={product.description} src={product.image} />
+                {/* <div className="absolute top-2 right-2 bg-secondary-container text-on-secondary-container px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                  Top Rated
+                </div> */}
               </div>
-            </div>
-            <h4 className="font-headline-md text-[18px] text-on-surface truncate px-xs">
-              Premium Organic Kibble
-            </h4>
-            <p className="font-label-sm text-label-sm text-on-surface-variant px-xs mb-sm">
-              Natural, Grain-Free
-            </p>
-            <div className="flex justify-between items-center px-xs pb-xs">
-              <span className="font-bold text-primary text-body-lg">
-                $34.99
-              </span>
-              <button className="bg-secondary p-2 rounded-lg text-white hover:opacity-80 transition-opacity">
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  data-icon="add_shopping_cart"
-                >
-                  add_shopping_cart
+              <h4 className="font-headline-md text-[18px] text-on-surface truncate px-xs">
+                {product.item_name}
+              </h4>
+              <div className="flex justify-between items-center px-xs pb-xs">
+                <span className="font-bold text-primary text-body-lg">
+                  ${product.price}
                 </span>
-              </button>
-            </div>
-          </div>
-          {/* <!-- Product Card 2 --> */}
-          <div className="min-w-[240px] md:min-w-[300px] bg-surface-container-lowest rounded-xl p-sm shadow-sm hover:shadow-lg transition-all active:scale-95 group">
-            <div className="relative rounded-lg overflow-hidden h-48 mb-sm bg-surface-variant">
-              <img
-                alt="Product"
-                className="w-full h-full object-cover"
-                data-alt="An elegant, modern multi-level cat tree with minimalist grey cushions and natural wood pillars. It stands against a clean, light-colored wall in a bright living room. The style is sleek and professional, blending pet functionality with high-end interior design, lit by soft natural window light."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBB-HF0sz5_wJ0zwtF2FTGoDjanVUOFQ88ySuH4_usJ1ZPPYS4OQTtCJluPOVI_somjtYa_uDIi-eJQ4Ifkx-JSjReGPLy4-FLRwoPZP1nybtT0hr0a7S6zIJs03_xmSTIoep2KYPv8la5nzaCgE7aWK7wh9Xhk_IHDrjcjH1EyNj3vP76zx9YTp_-O0pY_9QYA8PXFdsy8P0nwHosMKRkCS0mTYQTA4UIoFh90gYDI2o4P6Zs1PjC1MIUsUZrplQ1BDqYvcDkioDfC"
-              />
-            </div>
-            <h4 className="font-headline-md text-[18px] text-on-surface truncate px-xs">
-              Minimalist Cat Tree
-            </h4>
-            <p className="font-label-sm text-label-sm text-on-surface-variant px-xs mb-sm">
-              Sustainable Pine
-            </p>
-            <div className="flex justify-between items-center px-xs pb-xs">
-              <span className="font-bold text-primary text-body-lg">
-                $120.00
-              </span>
-              <button className="bg-secondary p-2 rounded-lg text-white hover:opacity-80 transition-opacity">
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  data-icon="add_shopping_cart"
+                <button
+                  className="bg-secondary p-2 rounded-lg text-white hover:opacity-80 transition-opacity"
+                  onClick={(e) => {
+                    // IMPORTANT!!!
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAddToCart(product);
+                  }}
                 >
-                  add_shopping_cart
-                </span>
-              </button>
-            </div>
-          </div>
-          {/* <!-- Product Card 3 --> */}
-          <div className="min-w-[240px] md:min-w-[300px] bg-surface-container-lowest rounded-xl p-sm shadow-sm hover:shadow-lg transition-all active:scale-95 group">
-            <div className="relative rounded-lg overflow-hidden h-48 mb-sm bg-surface-variant">
-              <img
-                alt="Product"
-                className="w-full h-full object-cover"
-                data-alt="A stylish, colorful braided dog leash coiled on a soft tan background. The leash features vibrant orange and teal accents, mirroring the PetHaven brand palette. The lighting is diffused and soft, creating a tactile and premium look with gentle highlights on the metallic clasp."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6Pr7nm6akNvEjbymUrTAi30pNRoDEst3BZa9au4STOtDMWXveZGTsFHEzibpwiVwlCkuF0VOzX69oSiMXEQYCzIIVYUiQPDk5lFo08dgQh3H6FcHghrHYBuoD92XL8xFjNuKFMeOi4RA3PcAYqL3WUqbIguTU9ili_IX6IEMPuhHF69iucUt_LkzisJA2XYbzNLgNd0fuLTWeTy5BUU34wzKfDfOzOyNbn-xllQqFQB1fhmApXjwgt53kV6VbixwNEeGgrcXm4rMm"
-              />
-            </div>
-            <h4 className="font-headline-md text-[18px] text-on-surface truncate px-xs">
-              Braided Rope Leash
-            </h4>
-            <p className="font-label-sm text-label-sm text-on-surface-variant px-xs mb-sm">
-              Durable &amp; Vibrant
-            </p>
-            <div className="flex justify-between items-center px-xs pb-xs">
-              <span className="font-bold text-primary text-body-lg">
-                $24.50
-              </span>
-              <button className="bg-secondary p-2 rounded-lg text-white hover:opacity-80 transition-opacity">
-                <span
-                  className="material-symbols-outlined text-[20px]"
-                  data-icon="add_shopping_cart"
-                >
-                  add_shopping_cart
-                </span>
-              </button>
-            </div>
-          </div>
+                  <span
+                    className="material-symbols-outlined text-[20px]"
+                    data-icon="add_shopping_cart"
+                  >
+                    add_shopping_cart
+                  </span>
+                </button>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
       {/* <!-- Pet Care Tips Bento-ish Grid --> */}
