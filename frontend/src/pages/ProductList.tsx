@@ -1,23 +1,24 @@
-import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { useCart } from "../contexts/cart/UseCart";
-import type { Product } from "../contexts/cart/CartContext";
-import { Link, useLocation } from "react-router";
+import { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useCart } from '../contexts/cart/UseCart';
+import type { Product } from '../contexts/cart/CartContext';
+import { Link, useLocation } from 'react-router';
+import toast from 'react-hot-toast';
 
 const PrpductList = () => {
   const [products, setProducts] = useState<any[]>([]);
   const { setCart } = useCart();
   const location = useLocation();
-  const initialPetType = location.state?.selectedPetType || "all";
+  const initialPetType = location.state?.selectedPetType || 'all';
   const [activePetType, setActivePetType] = useState<string>(initialPetType);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:4001/products");
+        const res = await fetch('http://localhost:4001/products');
         if (!res.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await res.json();
 
@@ -26,10 +27,10 @@ const PrpductList = () => {
         } else if (Array.isArray(data)) {
           setProducts(data);
         } else {
-          console.error("Unexpected data structure:", data);
+          console.error('Unexpected data structure:', data);
         }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error('Fetch error:', err);
       }
     };
 
@@ -51,19 +52,19 @@ const PrpductList = () => {
           ...curr,
           {
             ...product,
-            productId: Number(product._id),
+            productId: product._id,
             quantity: 1,
             id: uuidv4(),
           },
         ];
       }
     });
-    // alert(`${product.item_name} has been added to your cart!`);
+    toast.success(`${product.item_name} has been added to your cart!`);
   };
 
   const filteredProducts = products.filter((product) => {
     const matchesPetType =
-      activePetType === "all" || product.pet_type === activePetType;
+      activePetType === 'all' || product.pet_type === activePetType;
 
     const matchesSearch = product.item_name
       .toLowerCase()
@@ -110,11 +111,11 @@ const PrpductList = () => {
       <section className="mb-gutter flex overflow-x-auto pb-4 gap-3 no-scrollbar">
         {/* PetType buttoms */}
         <button
-          onClick={() => setActivePetType("all")}
+          onClick={() => setActivePetType('all')}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            activePetType === "all"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            activePetType === 'all'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           <span
@@ -127,64 +128,64 @@ const PrpductList = () => {
         </button>
         <button
           onClick={() => {
-            if (activePetType === "dog") {
-              setActivePetType("all");
+            if (activePetType === 'dog') {
+              setActivePetType('all');
             } else {
-              setActivePetType("dog");
+              setActivePetType('dog');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            activePetType === "dog"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            activePetType === 'dog'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Dogs
         </button>
         <button
           onClick={() => {
-            if (activePetType === "cat") {
-              setActivePetType("all");
+            if (activePetType === 'cat') {
+              setActivePetType('all');
             } else {
-              setActivePetType("cat");
+              setActivePetType('cat');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            activePetType === "cat"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            activePetType === 'cat'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Cats
         </button>
         <button
           onClick={() => {
-            if (activePetType === "bird") {
-              setActivePetType("all");
+            if (activePetType === 'bird') {
+              setActivePetType('all');
             } else {
-              setActivePetType("bird");
+              setActivePetType('bird');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            activePetType === "bird"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            activePetType === 'bird'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Birds
         </button>
         <button
           onClick={() => {
-            if (activePetType === "fish") {
-              setActivePetType("all");
+            if (activePetType === 'fish') {
+              setActivePetType('all');
             } else {
-              setActivePetType("fish");
+              setActivePetType('fish');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            activePetType === "fish"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            activePetType === 'fish'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Fish
@@ -195,80 +196,80 @@ const PrpductList = () => {
         {/* category buttoms */}
         <button
           onClick={() => {
-            if (search === "food") {
-              setSearch("");
+            if (search === 'food') {
+              setSearch('');
             } else {
-              setSearch("food");
+              setSearch('food');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            search === "food"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            search === 'food'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Foods
         </button>
         <button
           onClick={() => {
-            if (search === "toy") {
-              setSearch("");
+            if (search === 'toy') {
+              setSearch('');
             } else {
-              setSearch("toy");
+              setSearch('toy');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            search === "toy"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            search === 'toy'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Toys
         </button>
         <button
           onClick={() => {
-            if (search === "leash") {
-              setSearch("");
+            if (search === 'leash') {
+              setSearch('');
             } else {
-              setSearch("leash");
+              setSearch('leash');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            search === "leash"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            search === 'leash'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Leash
         </button>
         <button
           onClick={() => {
-            if (search === "cage") {
-              setSearch("");
+            if (search === 'cage') {
+              setSearch('');
             } else {
-              setSearch("cage");
+              setSearch('cage');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            search === "cage"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            search === 'cage'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Cages
         </button>
         <button
           onClick={() => {
-            if (search === "shampoo") {
-              setSearch("");
+            if (search === 'shampoo') {
+              setSearch('');
             } else {
-              setSearch("shampoo");
+              setSearch('shampoo');
             }
           }}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
-            search === "shampoo"
-              ? "bg-secondary-container text-white"
-              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+            search === 'shampoo'
+              ? 'bg-secondary-container text-white'
+              : 'bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container'
           }`}
         >
           Shampoo

@@ -1,25 +1,34 @@
-import { useState, useEffect } from "react";
-import { useCart } from "../contexts/cart/UseCart";
-import { useParams } from "react-router";
-import type { Product } from "../contexts/cart/CartContext";
-import { v4 as uuidv4 } from "uuid";
+import { useState, useEffect } from 'react';
+import { useCart } from '../contexts/cart/UseCart';
+import { useParams } from 'react-router';
+import type { Product } from '../contexts/cart/CartContext';
+import { v4 as uuidv4 } from 'uuid';
+import { useRecently } from '../contexts/recently/UseRecently';
+import toast from 'react-hot-toast';
 // import { Link } from "react-router";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const { setCart } = useCart();
+  const { setRecentProducts } = useRecently();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const res = await fetch(`http://localhost:4001/products/${id}`);
         if (!res.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await res.json();
+        const product = data.product || data;
+        setProduct(product);
 
-        setProduct(data.product || data);
+        setRecentProducts((prev) => {
+          const alreadyExist = prev.find((p) => p._id === product._id);
+          if (alreadyExist) return prev;
+          return [product, ...prev].slice(0, 4);
+        });
 
         // if (data && data.product) {
         // } else if (Array.isArray(data)) {
@@ -28,7 +37,7 @@ const ProductDetail = () => {
         //   console.error("Unexpected data structure:", data);
         // }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error('Fetch error:', err);
       }
     };
 
@@ -52,14 +61,14 @@ const ProductDetail = () => {
           ...curr,
           {
             ...product,
-            productId: Number(product._id),
+            productId: product._id,
             quantity: 1,
             id: uuidv4(),
           },
         ];
       }
     });
-    // alert(`${product.item_name} has been added to your cart!`);
+    toast.success(`${product.item_name} has been added to your cart!`);
   };
 
   if (!product) {

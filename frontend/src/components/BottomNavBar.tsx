@@ -1,12 +1,12 @@
-import { Link } from "react-router";
-import { useUser } from "../contexts/user/UseUser";
-import { useCart } from "../contexts/cart/UseCart";
+import { Link } from 'react-router';
+import { useUser } from '../contexts/user/UseUser';
+import { useCart } from '../contexts/cart/UseCart';
 
 // Reaact-icons
-import { RiHomeSmileLine } from "react-icons/ri";
-import { RiShoppingBag4Line } from "react-icons/ri";
-import { MdOutlineShoppingCart } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
+import { RiHomeSmileLine } from 'react-icons/ri';
+import { RiShoppingBag4Line } from 'react-icons/ri';
+import { MdOutlineShoppingCart } from 'react-icons/md';
+import { CgProfile } from 'react-icons/cg';
 
 const BottomNavBar = () => {
   const { user } = useUser();
@@ -19,7 +19,7 @@ const BottomNavBar = () => {
   return (
     <nav className="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container-lowest dark:bg-neutral-900 dark:text-white shadow-lg rounded-t-xl">
       <Link
-        to={"/"}
+        to={'/'}
         className={`flex flex-col items-center justify-center text-on-surface-variant hover:bg-secondary-container transition-colors px-4 py-1 rounded-full active:scale-110 transition-transform duration-200`}
       >
         {/* bg-secondary-container text-on-secondary-container */}
@@ -34,7 +34,7 @@ const BottomNavBar = () => {
         </span>
       </Link>
       <Link
-        to={"products"}
+        to={'products'}
         className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-secondary-container transition-colors px-4 py-1 rounded-full active:scale-110 transition-transform duration-200"
       >
         <span
@@ -48,7 +48,7 @@ const BottomNavBar = () => {
         </span>
       </Link>
       <Link
-        to={"cart"}
+        to={'cart'}
         className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-secondary-container transition-colors px-4 py-1 rounded-full active:scale-110 transition-transform duration-200"
       >
         <div className="relative p-2">
@@ -71,10 +71,10 @@ const BottomNavBar = () => {
       <Link
         to={
           user
-            ? user.role === "admin"
-              ? "/admin_dashboard"
-              : "/customer_dashboard"
-            : "/auth"
+            ? user.role === 'admin'
+              ? '/admin_dashboard'
+              : '/customer_dashboard'
+            : '/auth'
         }
         className="flex flex-col items-center justify-center text-on-surface-variant hover:bg-secondary-container transition-colors px-4 py-1 rounded-full active:scale-110 transition-transform duration-200"
       >

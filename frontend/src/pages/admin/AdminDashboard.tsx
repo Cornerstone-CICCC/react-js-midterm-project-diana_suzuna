@@ -1,16 +1,19 @@
-import { useUser } from "../../contexts/user/UseUser";
-import { useNavigate } from "react-router";
+import { useState } from 'react';
+import { useUser } from '../../contexts/user/UseUser';
+import { useNavigate, Link } from 'react-router';
 
 const AdminDashboard = () => {
-  const { logout } = useUser();
+  const { user, logout } = useUser();
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleLogout = () => {
-    const isConfirmed = window.confirm("Are you sure you want to logout?");
-    if (isConfirmed) {
-      logout();
-      navigate("/auth");
-    }
+    setShowModal(true);
+  };
+
+  const confirmLogout = () => {
+    logout();
+    navigate('/auth');
   };
 
   return (
@@ -37,15 +40,49 @@ const AdminDashboard = () => {
         </div>
       </section>
       {/* <!-- Logout Action --> */}
-      <section className="flex justify-center mt-xl">
-        <button
-          className="flex items-center gap-2 bg-on-surface-variant/5 text-error px-xl py-md rounded-full font-bold hover:bg-error-container/20 active:scale-95 transition-all dark:bg-neutral-900"
-          onClick={handleLogout}
+      {user ? (
+        <section className="flex justify-center mt-xl">
+          <button
+            className="flex items-center gap-2 bg-on-surface-variant/5 text-error px-xl py-md rounded-full font-bold hover:bg-error-container/20 active:scale-95 transition-all dark:bg-neutral-900"
+            onClick={handleLogout}
+          >
+            <span className="material-symbols-outlined">logout</span>
+            Logout from Account
+          </button>
+        </section>
+      ) : (
+        <Link
+          to="/auth"
+          className="flex items-center gap-2 bg-primary text-on-primary px-xl py-md rounded-full font-bold hover:opacity-90 active:scale-95 transition-all shadow-md no-underline"
         >
-          <span className="material-symbols-outlined">logout</span>
-          Logout from Account
-        </button>
-      </section>
+          <span className="material-symbols-outlined">login</span>
+          Login / Signup to Account
+        </Link>
+      )}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-surface rounded-2xl p-lg shadow-xl max-w-sm w-full mx-4 flex flex-col gap-md">
+            <h2 className="front-headline-lg text-headline-lg text-on-surface">
+              Are you sure you want to logout?
+            </h2>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-lg py-sm rounded-full font-label-md text-label-ms bg-surface-container text-on-surface hover:bg-surface-container-high transition-all"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={confirmLogout}
+                className="px-lg py-sm rounded-full font-label-md text-label-md bg-error text-on-error hover:opacity-90 active:scale-95 transition-all"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 };

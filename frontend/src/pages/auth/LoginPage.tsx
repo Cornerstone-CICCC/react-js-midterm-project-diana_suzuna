@@ -1,12 +1,13 @@
-import { Link } from "react-router";
-import { useState } from "react";
-import { useNavigate } from "react-router";
-import { useUser } from "../../contexts/user/UseUser";
+import { Link } from 'react-router';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useUser } from '../../contexts/user/UseUser';
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const { setUser } = useUser();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.SubmitEvent) => {
@@ -28,10 +29,10 @@ const LoginPage = () => {
     // }
 
     try {
-      const res = await fetch("http://localhost:4001/auth/login", {
-        method: "POST",
+      const res = await fetch('http://localhost:4001/auth/login', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: email,
@@ -41,21 +42,21 @@ const LoginPage = () => {
 
       if (!res.ok) {
         const errorData = await res.json();
-        alert(errorData.message || "Login failed");
+        toast.error(errorData.message || 'Login failed');
         return;
       }
 
       const data = await res.json();
       setUser(data);
 
-      if (data.role === "admin") {
-        navigate("/admin_dashboard");
+      if (data.role === 'admin') {
+        navigate('/admin_dashboard');
       } else {
-        navigate("/customer_dashboard");
+        navigate('/customer_dashboard');
       }
     } catch (error) {
-      console.error("Network error:", error);
-      alert("Something went wrong with the network.");
+      console.error('Network error:', error);
+      toast.error('Something went wrong with the network.');
     }
   };
 
@@ -70,7 +71,7 @@ const LoginPage = () => {
               Login
             </button>
             <Link
-              to={"/auth/signup"}
+              to={'/auth/signup'}
               className="px-8 py-2.5 rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-highest transition-all duration-300"
             >
               Sign Up
@@ -144,7 +145,7 @@ const LoginPage = () => {
           <p className="mt-auto pt-12 text-center font-body-md text-body-md text-on-surface-variant">
             Don't have an account?
             <Link
-              to={"/auth/signup"}
+              to={'/auth/signup'}
               className="text-primary font-bold hover:underline"
             >
               Create an account
@@ -152,7 +153,7 @@ const LoginPage = () => {
           </p>
           <p className="mt-auto pt-12 text-center font-body-md text-body-md text-on-surface-variant">
             Go to home
-            <Link to={"/"} className="text-primary font-bold hover:underline">
+            <Link to={'/'} className="text-primary font-bold hover:underline">
               without login
             </Link>
           </p>

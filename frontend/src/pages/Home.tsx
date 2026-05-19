@@ -1,12 +1,13 @@
-import { GiCat } from "react-icons/gi";
-import { SiDatadog } from "react-icons/si";
-import { FaEarlybirds } from "react-icons/fa";
-import { GiTropicalFish } from "react-icons/gi";
-import { Link, useNavigate } from "react-router";
-import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { useCart } from "../contexts/cart/UseCart";
-import type { Product } from "../contexts/cart/CartContext";
+import { GiCat } from 'react-icons/gi';
+import { SiDatadog } from 'react-icons/si';
+import { FaEarlybirds } from 'react-icons/fa';
+import { GiTropicalFish } from 'react-icons/gi';
+import { Link, useNavigate } from 'react-router';
+import { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useCart } from '../contexts/cart/UseCart';
+import type { Product } from '../contexts/cart/CartContext';
+import toast from 'react-hot-toast';
 
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -16,9 +17,9 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:4001/products");
+        const res = await fetch('http://localhost:4001/products');
         if (!res.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await res.json();
 
@@ -27,10 +28,10 @@ const Home = () => {
         } else if (Array.isArray(data)) {
           setProducts(data);
         } else {
-          console.error("Unexpected data structure:", data);
+          console.error('Unexpected data structure:', data);
         }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error('Fetch error:', err);
       }
     };
 
@@ -52,18 +53,18 @@ const Home = () => {
           ...curr,
           {
             ...product,
-            productId: Number(product._id),
+            productId: product._id,
             quantity: 1,
             id: uuidv4(),
           },
         ];
       }
     });
-    // alert(`${product.item_name} has been added to your cart!`);
+    toast.success(`${product.item_name} has been added to your cart!`);
   };
 
   const handlePetTypeClick = (petType: string) => {
-    navigate("/products", { state: { selectedPetType: petType } });
+    navigate('/products', { state: { selectedPetType: petType } });
   };
 
   return (
@@ -88,7 +89,7 @@ const Home = () => {
               door.
             </p>
             <Link
-              to={"products"}
+              to={'products'}
               className="bg-secondary-container text-on-secondary-container px-lg py-sm rounded-full font-bold shadow-md hover:opacity-90 active:scale-95 transition-all"
             >
               Shop Now
@@ -107,7 +108,7 @@ const Home = () => {
           <div
             className="flex flex-col items-center gap-sm group cursor-pointer"
             onClick={() => {
-              handlePetTypeClick("dog");
+              handlePetTypeClick('dog');
             }}
           >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
@@ -125,7 +126,7 @@ const Home = () => {
           <div
             className="flex flex-col items-center gap-sm group cursor-pointer"
             onClick={() => {
-              handlePetTypeClick("cat");
+              handlePetTypeClick('cat');
             }}
           >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
@@ -143,7 +144,7 @@ const Home = () => {
           <div
             className="flex flex-col items-center gap-sm group cursor-pointer"
             onClick={() => {
-              handlePetTypeClick("bird");
+              handlePetTypeClick('bird');
             }}
           >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
@@ -161,7 +162,7 @@ const Home = () => {
           <div
             className="flex flex-col items-center gap-sm group cursor-pointer"
             onClick={() => {
-              handlePetTypeClick("fish");
+              handlePetTypeClick('fish');
             }}
           >
             <div className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-surface-container flex items-center justify-center group-hover:bg-secondary-container transition-colors shadow-sm">
@@ -190,7 +191,7 @@ const Home = () => {
             </p>
           </div>
           <Link
-            to={"/products"}
+            to={'/products'}
             className="text-primary font-label-md text-label-md hover:underline"
           >
             View All
@@ -278,7 +279,7 @@ const Home = () => {
               className="font-label-md text-label-md flex items-center gap-1 hover:underline"
               href="#"
             >
-              Read More{" "}
+              Read More{' '}
               <span
                 className="material-symbols-outlined text-[16px]"
                 data-icon="arrow_forward"
@@ -304,7 +305,7 @@ const Home = () => {
               className="font-label-md text-label-md text-primary flex items-center gap-1 hover:underline"
               href="#"
             >
-              Book Vet{" "}
+              Book Vet{' '}
               <span
                 className="material-symbols-outlined text-[16px]"
                 data-icon="calendar_today"

@@ -1,8 +1,12 @@
-import { useCart } from "../contexts/cart/UseCart";
-import { Link } from "react-router";
+import { useCart } from '../contexts/cart/UseCart';
+import { Link } from 'react-router';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const Cart = () => {
   const { cart, setCart, totalSum } = useCart();
+  const [removedItem, setRemovedItem] = useState<string | number | null>(null);
+
   // const estimatedTax = totalSum * 0.08;
   const totalItemsCount = cart.reduce(
     (sum, item) => sum + (item.quantity ?? 0),
@@ -22,11 +26,19 @@ const Cart = () => {
     );
   };
 
-  const handleRemoveItem = (productId: string | number) => {
-    const isConfirmed = window.confirm("Remove this item from your cart?");
-    if (isConfirmed) {
-      setCart((curr) => curr.filter((p) => p._id !== productId));
-    }
+  const handleRemovedItem = (productId: string | number) => {
+    setRemovedItem(productId);
+  };
+
+  const confirmRemove = () => {
+    setCart((curr) =>
+      curr.filter((p) => {
+        console.log('removedItem:', removedItem, 'p._id:', p._id);
+        return p._id !== removedItem;
+      }),
+    );
+    toast.error('Item removed from cart.');
+    setRemovedItem(null);
   };
 
   return (
@@ -77,7 +89,7 @@ const Cart = () => {
                     </div>
                     <button
                       className="text-on-surface-variant hover:text-error transition-colors"
-                      onClick={() => handleRemoveItem(p._id)}
+                      onClick={() => handleRemovedItem(p._id)}
                     >
                       <span className="material-symbols-outlined">delete</span>
                     </button>
@@ -150,7 +162,7 @@ const Cart = () => {
                   </span>
                 </button>
                 <Link
-                  to={"/products"}
+                  to={'/products'}
                   className="w-full bg-transparent border-2 border-primary text-primary font-headline-md py-4 rounded-full active:scale-[0.98] transition-transform hover:bg-surface-container-highest flex items-center justify-center gap-2"
                 >
                   <span>Continue Shopping</span>
@@ -162,6 +174,30 @@ const Cart = () => {
                   Secure SSL Checkout
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {removedItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-surface rounded-2xl p-lg shadow-xl max-w-sm w-full mx-4 flex flex-col gap-md">
+            <h2 className="front-headline-lg text-headline-lg text-on-surface">
+              Remove this item?
+            </h2>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setRemovedItem(null)}
+                className="px-lg py-sm rounded-full font-label-md text-label-ms bg-surface-container text-on-surface hover:bg-surface-container-high transition-all"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={confirmRemove}
+                className="px-lg py-sm rounded-full font-label-md text-label-md bg-error text-on-error hover:opacity-90 active:scale-95 transition-all"
+              >
+                Remove
+              </button>
             </div>
           </div>
         </div>
