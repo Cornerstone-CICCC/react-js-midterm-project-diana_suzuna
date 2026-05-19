@@ -2,7 +2,7 @@ import { useUser } from "../../contexts/user/UseUser";
 import { useNavigate } from "react-router";
 
 const AdminDashboard = () => {
-  const { user, logout } = useUser();
+  const { logout } = useUser();
   const navigate = useNavigate();
 
   const handleLogout = () => {
