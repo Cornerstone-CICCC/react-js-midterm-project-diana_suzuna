@@ -59,12 +59,12 @@ const ProductDetail = () => {
         ];
       }
     });
-    alert(`${product.item_name} has been added to your cart!`);
+    // alert(`${product.item_name} has been added to your cart!`);
   };
 
   if (!product) {
     return (
-      <div className="pt-24 text-center font-body-lg text-on-surface-variant">
+      <div className="pt-24 text-center font-body-lg text-on-surface-variant dark:text-white">
         Loading product details...
       </div>
     );
@@ -83,7 +83,7 @@ const ProductDetail = () => {
         {/* <!-- Product Info Column --> */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <h2 className="font-display-lg text-display-lg text-on-surface">
+            <h2 className="font-display-lg text-display-lg text-on-surface dark:text-white">
               {product.item_name}
             </h2>
           </div>

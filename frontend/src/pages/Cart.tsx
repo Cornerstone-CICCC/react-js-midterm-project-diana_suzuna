@@ -30,18 +30,18 @@ const Cart = () => {
   };
 
   return (
-    <main className="pt-24 px-margin-mobile max-w-max-width mx-auto lg:px-margin-desktop">
+    <main className="pt-24 px-margin-mobile max-w-max-width mx-auto lg:px-margin-desktop min-h-screen">
       <div className="mb-lg">
-        <h2 className="font-headline-lg text-headline-lg text-on-surface">
+        <h2 className="font-headline-lg text-headline-lg text-on-surface dark:text-white">
           Your Cart
         </h2>
-        <p className="font-body-md text-body-md text-on-surface-variant">
+        <p className="font-body-md text-body-md text-on-surface-variant dark:text-white">
           Review your furry friend's favorite items.
         </p>
       </div>
 
       {cart.length === 0 ? (
-        <div className="text-center py-16 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-sm">
+        <div className="text-center py-16 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-sm dark:bg-neutral-900 dark:text-white">
           <span className="material-symbols-outlined text-[64px] text-outline mb-4">
             shopping_basket
           </span>
@@ -92,7 +92,7 @@ const Cart = () => {
                           remove
                         </span>
                       </button>
-                      <span className="font-label-md text-label-md w-6 text-center">
+                      <span className="font-label-md text-label-md w-6 text-center dark:text-black">
                         {p.quantity}
                       </span>
                       <button

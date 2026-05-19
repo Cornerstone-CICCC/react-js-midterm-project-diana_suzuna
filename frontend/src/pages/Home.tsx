@@ -59,7 +59,7 @@ const Home = () => {
         ];
       }
     });
-    alert(`${product.item_name} has been added to your cart!`);
+    // alert(`${product.item_name} has been added to your cart!`);
   };
 
   const handlePetTypeClick = (petType: string) => {
@@ -67,7 +67,7 @@ const Home = () => {
   };
 
   return (
-    <main className="pt-16 max-w-max-width mx-auto">
+    <main className="pt-16 max-w-max-width mx-auto pb-20">
       {/* <!-- Hero Banner --> */}
       <section className="px-margin-mobile md:px-margin-desktop py-base mt-base">
         <div className="relative overflow-hidden rounded-xl bg-primary-container h-[240px] md:h-[400px] flex items-center shadow-lg">
@@ -99,7 +99,7 @@ const Home = () => {
       {/* <!-- Quick Categories --> */}
       <section className="px-margin-mobile md:px-margin-desktop py-lg">
         <div className="flex justify-between items-center mb-md">
-          <h3 className="font-headline-md text-headline-md text-on-surface">
+          <h3 className="font-headline-md text-headline-md text-on-surface dark:text-white">
             Browse by Pet
           </h3>
         </div>
@@ -118,7 +118,7 @@ const Home = () => {
                 <SiDatadog />
               </span>
             </div>
-            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
+            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors dark:text-white">
               Dogs
             </span>
           </div>
@@ -136,7 +136,7 @@ const Home = () => {
                 <GiCat />
               </span>
             </div>
-            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
+            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors dark:text-white">
               Cats
             </span>
           </div>
@@ -154,7 +154,7 @@ const Home = () => {
                 <FaEarlybirds />
               </span>
             </div>
-            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
+            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors dark:text-white">
               Birds
             </span>
           </div>
@@ -172,7 +172,7 @@ const Home = () => {
                 <GiTropicalFish />
               </span>
             </div>
-            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors">
+            <span className="font-label-md text-label-md text-on-surface-variant group-hover:text-primary transition-colors dark:text-white">
               Fish
             </span>
           </div>
@@ -182,10 +182,10 @@ const Home = () => {
       <section className="py-lg">
         <div className="px-margin-mobile md:px-margin-desktop flex justify-between items-end mb-md">
           <div>
-            <h3 className="font-headline-md text-headline-md text-on-surface">
+            <h3 className="font-headline-md text-headline-md text-on-surface dark:text-white">
               Trending Now
             </h3>
-            <p className="font-body-md text-body-md text-on-surface-variant">
+            <p className="font-body-md text-body-md text-on-surface-variant dark:text-white">
               Top picks from the community
             </p>
           </div>
@@ -240,7 +240,7 @@ const Home = () => {
       </section>
       {/* <!-- Pet Care Tips Bento-ish Grid --> */}
       <section className="px-margin-mobile md:px-margin-desktop py-xl">
-        <h3 className="font-headline-md text-headline-md text-on-surface mb-lg">
+        <h3 className="font-headline-md text-headline-md text-on-surface mb-lg dark:text-white">
           Pet Care Tips
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">

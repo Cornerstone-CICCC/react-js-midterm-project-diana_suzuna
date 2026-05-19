@@ -3,20 +3,15 @@ import BottomNavBar from "../components/BottomNavBar";
 import { Outlet } from "react-router";
 
 const PageLayout = () => {
-  // const { isDark } = useTheme();
-
   return (
-    <div>
+    <div className="dark:bg-neutral-950 dark:text-white">
       <Header />
 
-      <main>
+      <main className="min-h-screendark:bg-neutral-950 dark:text-white">
         <Outlet />
       </main>
 
       <BottomNavBar />
-      {/* <Toaster toastOptions={{ className: "text-sm" }} /> */}
-
-      {/* <Footer /> */}
     </div>
   );
 };

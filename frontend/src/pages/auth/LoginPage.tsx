@@ -150,6 +150,12 @@ const LoginPage = () => {
               Create an account
             </Link>
           </p>
+          <p className="mt-auto pt-12 text-center font-body-md text-body-md text-on-surface-variant">
+            Go to home
+            <Link to={"/"} className="text-primary font-bold hover:underline">
+              without login
+            </Link>
+          </p>
         </div>
       </div>
     </main>

@@ -58,7 +58,7 @@ const PrpductList = () => {
         ];
       }
     });
-    alert(`${product.item_name} has been added to your cart!`);
+    // alert(`${product.item_name} has been added to your cart!`);
   };
 
   const filteredProducts = products.filter((product) => {
@@ -73,15 +73,15 @@ const PrpductList = () => {
   });
 
   return (
-    <main className="pt-20 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto">
+    <main className="pt-20 px-margin-mobile pb-20 md:px-margin-desktop max-w-max-width mx-auto">
       {/* <!-- Search and Hero Section --> */}
       <section className="mb-lg">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <h2 className="font-headline-lg text-headline-lg text-on-surface">
+            <h2 className="font-headline-lg text-headline-lg text-on-surface dark:text-white">
               Find the best for your buddy
             </h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl dark:text-white">
               Premium organic food, toys, and care essentials delivered with
               love to your doorstep.
             </p>
@@ -108,6 +108,7 @@ const PrpductList = () => {
       </section>
       {/* <!-- Filters Section --> */}
       <section className="mb-gutter flex overflow-x-auto pb-4 gap-3 no-scrollbar">
+        {/* PetType buttoms */}
         <button
           onClick={() => setActivePetType("all")}
           className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
@@ -188,6 +189,10 @@ const PrpductList = () => {
         >
           Fish
         </button>
+        <div>
+          <span>/</span>
+        </div>
+        {/* category buttoms */}
         <button
           onClick={() => {
             if (search === "food") {
@@ -219,6 +224,54 @@ const PrpductList = () => {
           }`}
         >
           Toys
+        </button>
+        <button
+          onClick={() => {
+            if (search === "leash") {
+              setSearch("");
+            } else {
+              setSearch("leash");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            search === "leash"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Leash
+        </button>
+        <button
+          onClick={() => {
+            if (search === "cage") {
+              setSearch("");
+            } else {
+              setSearch("cage");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            search === "cage"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Cages
+        </button>
+        <button
+          onClick={() => {
+            if (search === "shampoo") {
+              setSearch("");
+            } else {
+              setSearch("shampoo");
+            }
+          }}
+          className={`px-6 py-2 rounded-full font-label-md text-label-md whitespace-nowrap active:scale-95 transition-all ${
+            search === "shampoo"
+              ? "bg-secondary-container text-white"
+              : "bg-surface-container-highest text-on-surface-variant hover:bg-secondary-container"
+          }`}
+        >
+          Shampoo
         </button>
       </section>
       {/* <!-- Product Grid --> */}

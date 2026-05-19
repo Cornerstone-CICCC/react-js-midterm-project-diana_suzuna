@@ -43,7 +43,7 @@ const SignupPage = () => {
       if (data.role === "admin") {
         navigate("/admin_dashboard");
       } else {
-        navigate("/customer_dashboard");
+        navigate("/auth");
       }
     } catch (error) {
       console.error("Network error:", error);

@@ -1,16 +1,28 @@
-// import HeaderCounter from "./HeaderCounter";
-// import { useTheme } from "../contexts/theme/UseTheme";
+import { useTheme } from "../contexts/theme/UseTheme";
 import { Link } from "react-router";
+import { useCart } from "../contexts/cart/UseCart";
 
 // Reaact-icons
 import { MdOutlinePets } from "react-icons/md";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { FaRegMoon } from "react-icons/fa";
+import { FiSun } from "react-icons/fi";
 
 const Header = () => {
-  // const { isDark } = useTheme();
+  const { isDark, setIsDark } = useTheme();
+  const { cart } = useCart();
+
+  const totalItemsCount = cart.reduce(
+    (sum, item) => sum + (item.quantity ?? 0),
+    0,
+  );
+
+  const toggleTheme = () => {
+    setIsDark((prev) => !prev);
+  };
 
   return (
-    <header className="flex justify-between items-center gap-2 p-2">
+    <header className="flex justify-between items-center gap-2 p-2 dark:bg-neutral-900 dark:text-white">
       <Link to={"/"} className="logo flex items-center gap-2">
         <span
           className="material-symbols-outlined text-primary dark:text-primary-fixed"
@@ -24,34 +36,35 @@ const Header = () => {
       </Link>
       <div className="flex items-center gap-4">
         <Link
-          to={"cart"}
+          to={"/cart"}
           className="hover:opacity-80 transition-opacity active:scale-95 transition-transform"
         >
-          <span
-            className="material-symbols-outlined text-on-surface-variant"
-            data-icon="shopping_cart"
-          >
-            <MdOutlineShoppingCart />
-          </span>
+          <div className="relative p-2">
+            {totalItemsCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[11px] font-bold text-white shadow-sm ring-2 ring-surface animate-bounce-short">
+                {totalItemsCount}
+              </span>
+            )}
+            <span
+              className="material-symbols-outlined text-on-surface-variant dark:text-white"
+              data-icon="shopping_cart"
+            >
+              <MdOutlineShoppingCart />
+            </span>
+          </div>
         </Link>
+        <button onClick={toggleTheme}>
+          {isDark ? (
+            <span className="material-symbols-outlined text-on-surface-variant dark:text-white">
+              <FiSun />
+            </span>
+          ) : (
+            <span className="material-symbols-outlined text-on-surface-variant dark:text-white">
+              <FaRegMoon />
+            </span>
+          )}
+        </button>
       </div>
-      {/* <nav>
-        <ul className="flex gap-5 items-center">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/products">Products</Link>
-          </li>
-          <li>
-            <Link to="/products/cart">Cart</Link>
-          </li>
-        </ul>
-      </nav> */}
-      {/* <HeaderCounter /> */}
-      {/* <div>
-        <h3>Theme: {isDark ? "DARK" : "LIGHT"}</h3>
-      </div> */}
     </header>
   );
 };

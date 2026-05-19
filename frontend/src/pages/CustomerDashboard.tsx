@@ -1,14 +1,17 @@
 import { useUser } from "../contexts/user/UseUser";
-import { useNavigate } from "react-router";
+import { useCart } from "../contexts/cart/UseCart";
+import { useNavigate, Link } from "react-router";
 
 const CustomerDashboard = () => {
   const { user, logout } = useUser();
+  const { setCart } = useCart();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     const isConfirmed = window.confirm("Are you sure you want to logout?");
     if (isConfirmed) {
       logout();
+      setCart([]);
       navigate("/auth");
     }
   };
@@ -17,10 +20,10 @@ const CustomerDashboard = () => {
     <main className="pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto min-h-screen">
       {/* <!-- Welcome Section --> */}
       <section className="mb-lg">
-        <h1 className="font-display-lg text-display-lg text-primary mb-2">
-          Hello {user ? user.fullname : "there"}!
+        <h1 className="font-display-lg text-display-lg text-primary mb-2 dark:text-primary-fixed">
+          {user ? `Welcome back!` : "Welcome to Pet Party!"}
         </h1>
-        <p className="text-on-surface-variant font-body-lg">
+        <p className="text-on-surface-variant font-body-lg dark:text-white">
           It's a great day to pamper your furry friends.
         </p>
       </section>
@@ -90,7 +93,7 @@ const CustomerDashboard = () => {
       {/* <!-- Recently Viewed --> */}
       <section className="mb-xl">
         <div className="flex items-center justify-between mb-md">
-          <h2 className="font-headline-lg text-headline-lg text-on-surface">
+          <h2 className="font-headline-lg text-headline-lg text-on-surface dark:text-white">
             Recently Viewed
           </h2>
           <button className="text-primary font-bold text-label-md hover:underline">
@@ -163,18 +166,24 @@ const CustomerDashboard = () => {
         </div>
       </section>
       {/* <!-- Logout Action --> */}
-      {!user ? (
-        ""
-      ) : (
+      {user ? (
         <section className="flex justify-center mt-xl">
           <button
-            className="flex items-center gap-2 bg-on-surface-variant/5 text-error px-xl py-md rounded-full font-bold hover:bg-error-container/20 active:scale-95 transition-all"
+            className="flex items-center gap-2 bg-on-surface-variant/5 text-error px-xl py-md rounded-full font-bold hover:bg-error-container/20 active:scale-95 transition-all dark:bg-neutral-900"
             onClick={handleLogout}
           >
             <span className="material-symbols-outlined">logout</span>
             Logout from Account
           </button>
         </section>
+      ) : (
+        <Link
+          to="/auth"
+          className="flex items-center gap-2 bg-primary text-on-primary px-xl py-md rounded-full font-bold hover:opacity-90 active:scale-95 transition-all shadow-md no-underline"
+        >
+          <span className="material-symbols-outlined">login</span>
+          Login / Signup to Account
+        </Link>
       )}
     </main>
   );
