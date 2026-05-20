@@ -12,7 +12,7 @@ const checkAuth = (req, res, next) => {
         res.status(500).json({ message: 'Unable to verify acces token' });
         return;
     }
-    const accessToken = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.accesToken;
+    const accessToken = (_a = req.cookies) === null || _a === void 0 ? void 0 : _a.accessToken;
     if (!accessToken) {
         res.status(401).json({ message: 'Unauthorized access!' });
         return;
