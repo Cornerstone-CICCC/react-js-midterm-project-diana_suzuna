@@ -1,6 +1,6 @@
-import Header from "../components/Header";
-import BottomNavBar from "../components/BottomNavBar";
-import { Outlet } from "react-router";
+import Header from '../components/Header';
+import BottomNavBar from '../components/BottomNavBar';
+import { Outlet } from 'react-router';
 
 const PageLayout = () => {
   return (

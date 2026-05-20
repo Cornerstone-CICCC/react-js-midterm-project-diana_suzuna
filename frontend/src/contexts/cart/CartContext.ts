@@ -1,8 +1,8 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 // DummyJSON
 export interface Product {
-  _id: number | string;
+  _id: string;
   item_name: string;
   price: number;
   image: string;
@@ -11,7 +11,7 @@ export interface Product {
 
 // Cart Items
 export interface CartItem extends Product {
-  productId: number;
+  productId: string;
   quantity: number;
 }
 

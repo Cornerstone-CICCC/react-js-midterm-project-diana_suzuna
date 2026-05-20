@@ -1,27 +1,28 @@
-import { Link } from "react-router";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link } from 'react-router';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 
 const SignupPage = () => {
-  const [fullname, setFullname] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [fullname, setFullname] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      toast.error('Passwords do not match!');
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:4001/auth/signup", {
-        method: "POST",
+      const res = await fetch('http://localhost:4001/auth/signup', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           fullname: fullname,
@@ -32,7 +33,7 @@ const SignupPage = () => {
 
       if (!res.ok) {
         const errorData = await res.json();
-        alert(errorData.message || "Signup failed");
+        toast.error(errorData.message || 'Signup failed');
         return;
       }
 
@@ -40,14 +41,14 @@ const SignupPage = () => {
 
       const data = await res.json();
 
-      if (data.role === "admin") {
-        navigate("/admin_dashboard");
+      if (data.role === 'admin') {
+        navigate('/admin_dashboard');
       } else {
-        navigate("/auth");
+        navigate('/auth');
       }
     } catch (error) {
-      console.error("Network error:", error);
-      alert("Something went wrong with the network.");
+      console.error('Network error:', error);
+      toast.error('Something went wrong with the network.');
     }
   };
 
@@ -131,7 +132,7 @@ const SignupPage = () => {
             <p className="font-body-md text-body-md text-on-surface-variant">
               Already have an account?
               <Link
-                to={"/auth"}
+                to={'/auth'}
                 className="text-primary font-bold hover:underline"
               >
                 Login
@@ -144,7 +145,7 @@ const SignupPage = () => {
             By signing up, you agree to our
             <a className="underline" href="#">
               Terms of Service
-            </a>{" "}
+            </a>{' '}
             and
             <a className="underline" href="#">
               Privacy Policy

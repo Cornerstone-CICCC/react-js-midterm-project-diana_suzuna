@@ -21,7 +21,7 @@ const login = async (req: Request, res: Response) => {
     res.status(401).json({ message: 'Invalid email or password.' });
     return;
   }
-  const { token, role } = result;
+  const { token, role, fullname } = result;
 
   res.cookie('accesToken', token, {
     httpOnly: true,
@@ -31,6 +31,7 @@ const login = async (req: Request, res: Response) => {
   res.status(200).json({
     message: 'Login successfull!',
     role,
+    fullname,
   });
 };
 

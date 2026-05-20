@@ -32,7 +32,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(401).json({ message: 'Invalid email or password.' });
         return;
     }
-    const { token, role } = result;
+    const { token, role, fullname } = result;
     res.cookie('accesToken', token, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000,
@@ -40,6 +40,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.status(200).json({
         message: 'Login successfull!',
         role,
+        fullname,
     });
 });
 exports.default = {
