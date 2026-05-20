@@ -13,8 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const auth_service_1 = __importDefault(require("../services/auth.service"));
+const zxcvbn_1 = __importDefault(require("zxcvbn"));
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { fullname, email, password } = req.body;
+    if (!(fullname === null || fullname === void 0 ? void 0 : fullname.trim()) || !(email === null || email === void 0 ? void 0 : email.trim()) || !(password === null || password === void 0 ? void 0 : password.trim())) {
+        res.status(400).json({ message: 'All fields are required.' });
+        return;
+    }
+    const passwordScore = (0, zxcvbn_1.default)(password).score;
+    if (passwordScore <= 2) {
+        res.status(400).json({
+            message: 'Password is too weak. Try a longer or more complex password.',
+        });
+        return;
+    }
     try {
         const user = yield auth_service_1.default.signup({ fullname, email, password });
         res.status(201).json(user);
@@ -33,12 +45,13 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return;
     }
     const { token, role, fullname } = result;
-    res.cookie('accesToken', token, {
+    res.cookie('accessToken', token, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000,
+        sameSite: 'lax',
     });
     res.status(200).json({
-        message: 'Login successfull!',
+        message: 'Login successful!',
         role,
         fullname,
     });

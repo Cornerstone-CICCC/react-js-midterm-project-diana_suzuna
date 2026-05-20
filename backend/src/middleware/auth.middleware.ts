@@ -14,7 +14,7 @@ export const checkAuth = (
     return;
   }
 
-  const accessToken = req.cookies?.accesToken;
+  const accessToken = req.cookies?.accessToken;
 
   if (!accessToken) {
     res.status(401).json({ message: 'Unauthorized access!' });
